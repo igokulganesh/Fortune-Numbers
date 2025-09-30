@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
-import { Tag } from "primereact/tag";
 import { Divider } from "primereact/divider";
 import { Toast } from "primereact/toast";
 import { data } from "../data/content";
@@ -119,17 +118,17 @@ export default function Calculator() {
       <Toast ref={toast} />
 
       <form onSubmit={generateHoroscope} className="grid formgrid gap-3">
-        <div className="col-12 md:col-8">
-          <InputText
-            id="nameInput"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-            aria-label="Name or text"
-            className="w-full p-inputtext-lg m-6 p-5"
-          />
-        </div>
-        <div className="col-12 md:col-4 flex align-items-center justify-content-start md:justify-content-end gap-2">
+        <div className="col-12 flex align-items-center justify-content-start md:justify-content-end gap-2">
+          <div className="col-8">
+            <InputText
+              id="nameInput"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              aria-label="Name or text"
+              className="w-full p-inputtext-lg"
+            />
+          </div>
           <Button
             type="submit"
             label="Generate"
@@ -140,7 +139,7 @@ export default function Calculator() {
           />
           <Button
             label="Clear"
-            icon="pi pi-times"
+            //icon="pi pi-times"
             className="p-button-text"
             onClick={clearAll}
             aria-label="Clear input"
@@ -150,32 +149,16 @@ export default function Calculator() {
         {/* Result preview */}
         <div className="col-12">
           <Divider align="left">
-            <b className="text-700">Result</b>
+            <p className="text-500">Result</p>
           </Divider>
 
           <div className="surface-100 p-3 border-round shadow-1">
             <div className="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-3">
               <div className="flex align-items-center gap-3">
                 <div>
-                  <small className="text-500">Number</small>
-                  <div className="mt-1">
-                    <Tag
-                      value={number === null ? "-" : number}
-                      severity="info"
-                      rounded
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <small className="text-500">Preview</small>
-                  <div className="mt-1 text-700">
-                    {name && number !== null ? (
-                      `(${calculateNumber(name)}) live preview`
-                    ) : (
-                      <span className="text-400">—</span>
-                    )}
-                  </div>
+                  <b className="text-700">
+                    Number {number ? ": " + number : ""}
+                  </b>
                 </div>
               </div>
 
