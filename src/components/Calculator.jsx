@@ -1,6 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import { Card } from "primereact/card";
+import { Tag } from "primereact/tag";
+import { Divider } from "primereact/divider";
+import { Toast } from "primereact/toast";
 import { data } from "../data/content";
 
 const alphabet = [
@@ -8,10 +12,10 @@ const alphabet = [
 ];
 
 export default function Calculator() {
+  const toast = useRef(null);
   const [name, setName] = useState("");
   const [number, setNumber] = useState(null);
   const [horoscope, setHoroscope] = useState("");
-  const [error, setError] = useState("");
 
   // sanitize input safely (with a fallback if Unicode property escapes are unsupported)
   const sanitize = (s) => {
@@ -44,6 +48,11 @@ export default function Calculator() {
     return sum;
   }, []);
 
+  // Live compute number when `name` changes (UI preview)
+  useEffect(() => {
+    setNumber(name ? calculateNumber(name) : 0);
+  }, [name, calculateNumber]);
+
   // generate horoscope from current name
   const generateHoroscope = useCallback(
     (evt) => {
@@ -51,13 +60,10 @@ export default function Calculator() {
 
       const trimmed = (name || "").trim();
       if (!trimmed) {
-        setError("Please enter a name or text.");
         setNumber(null);
         setHoroscope("");
         return;
       }
-
-      setError("");
 
       let result = calculateNumber(trimmed);
 
@@ -72,38 +78,147 @@ export default function Calculator() {
     [name, calculateNumber]
   );
 
+  const clearAll = () => {
+    setName("");
+    setNumber(null);
+    setHoroscope("");
+  };
+
+  const copyHoroscope = async () => {
+    if (!horoscope) {
+      toast.current?.show({
+        severity: "warn",
+        summary: "Nothing to copy",
+        life: 1200,
+      });
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(horoscope);
+      toast.current?.show({
+        severity: "success",
+        summary: "Copied",
+        detail: "Horoscope copied to clipboard",
+        life: 1400,
+      });
+    } catch {
+      toast.current?.show({
+        severity: "error",
+        summary: "Copy failed",
+        life: 1400,
+      });
+    }
+  };
+
   return (
-    <div className="card p-4 max-w-xl mx-auto">
-      <form onSubmit={generateHoroscope} className="flex flex-col gap-3">
-        <div className="flex gap-2">
+    <Card
+      className="surface-card p-3 shadow-2"
+      title="Decoded Destiny"
+      subTitle="Finding Your Life's Blueprint in Numbers"
+    >
+      <Toast ref={toast} />
+
+      <form onSubmit={generateHoroscope} className="grid formgrid gap-3">
+        <div className="col-12 md:col-8">
           <InputText
             id="nameInput"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name or text"
+            placeholder="Enter your name"
             aria-label="Name or text"
-            className="p-inputtext-lg flex-1"
+            className="w-full p-inputtext-lg m-6 p-5"
           />
+        </div>
+        <div className="col-12 md:col-4 flex align-items-center justify-content-start md:justify-content-end gap-2">
           <Button
             type="submit"
-            label="Submit"
+            label="Generate"
+            icon="pi pi-magic"
+            className="p-button-raised p-button-success"
             disabled={!name.trim()}
             aria-disabled={!name.trim()}
           />
+          <Button
+            label="Clear"
+            icon="pi pi-times"
+            className="p-button-text"
+            onClick={clearAll}
+            aria-label="Clear input"
+          />
         </div>
 
-        {error && <div className="text-red-600">{error}</div>}
+        {/* Result preview */}
+        <div className="col-12">
+          <Divider align="left">
+            <b className="text-700">Result</b>
+          </Divider>
 
-        <div aria-live="polite" className="mt-2">
-          <div>
-            <strong>Number:</strong> {number === null ? "-" : number}
-          </div>
-          <div className="mt-2">
-            <strong>Horoscope:</strong>
-            <p className="m-0">{horoscope}</p>
+          <div className="surface-100 p-3 border-round shadow-1">
+            <div className="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-3">
+              <div className="flex align-items-center gap-3">
+                <div>
+                  <small className="text-500">Number</small>
+                  <div className="mt-1">
+                    <Tag
+                      value={number === null ? "-" : number}
+                      severity="info"
+                      rounded
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <small className="text-500">Preview</small>
+                  <div className="mt-1 text-700">
+                    {name && number !== null ? (
+                      `(${calculateNumber(name)}) live preview`
+                    ) : (
+                      <span className="text-400">—</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex align-items-center gap-2">
+                <Button
+                  label="Copy"
+                  icon="pi pi-copy"
+                  onClick={copyHoroscope}
+                  className="p-button-outlined"
+                  disabled={!horoscope}
+                />
+                <Button
+                  label="Use Another"
+                  icon="pi pi-refresh"
+                  onClick={() => {
+                    setName("");
+                    setHoroscope("");
+                  }}
+                  className="p-button-secondary"
+                />
+              </div>
+            </div>
+
+            <Divider />
+
+            <div>
+              <small className="text-500">Horoscope</small>
+              <div
+                className="mt-2 p-3 surface-card border-round"
+                style={{ minHeight: 80 }}
+              >
+                {horoscope ? (
+                  <div className="text-900">{horoscope}</div>
+                ) : (
+                  <div className="text-500">
+                    No horoscope yet. Click Generate.
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </form>
-    </div>
+    </Card>
   );
 }
