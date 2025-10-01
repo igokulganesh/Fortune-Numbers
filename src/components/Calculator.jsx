@@ -109,55 +109,58 @@ export default function Calculator() {
     }
   };
 
+  const cardHeader = (
+    <div className="calc-card-header flex align-items-center gap-3">
+      <div className="logo-circle">
+        <i className="pi pi-star-fill" style={{ fontSize: 22 }}></i>
+      </div>
+      <div>
+        <h3 className="m-0 text-primary">Decoded Destiny</h3>
+        <small className="text-600 text-secondary">
+          The mystic key to your success through numerology
+        </small>
+      </div>
+    </div>
+  );
+
   return (
-    <Card
-      className="surface-card p-3 shadow-2"
-      title="Decoded Destiny"
-      subTitle="Finding Your Life's Blueprint in Numbers"
-    >
+    <Card className="custom-card" header={cardHeader}>
       <Toast ref={toast} />
 
       <form onSubmit={generateHoroscope} className="grid formgrid gap-3">
-        <div className="col-12 flex align-items-center justify-content-start md:justify-content-end gap-2">
+        <div className="col-12 flex flex-wrap align-items-center justify-content-center gap-1">
           <div className="col-8">
             <InputText
               id="nameInput"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
+              className="w-full p-inputtext-lg name-input"
               aria-label="Name or text"
-              className="w-full p-inputtext-lg"
             />
           </div>
-          <Button
-            type="submit"
-            label="Generate"
-            icon="pi pi-magic"
-            className="p-button-raised p-button-success"
-            disabled={!name.trim()}
-            aria-disabled={!name.trim()}
-          />
-          <Button
-            label="Clear"
-            //icon="pi pi-times"
-            className="p-button-text"
-            onClick={clearAll}
-            aria-label="Clear input"
-          />
+          <div className="col-2">
+            <Button
+              type="submit"
+              label="Generate"
+              icon="pi pi-sparkles"
+              className="p-button-raised p-button-success"
+              disabled={!name.trim()}
+              aria-disabled={!name.trim()}
+            />
+          </div>
         </div>
 
         {/* Result preview */}
         <div className="col-12">
-          <Divider align="left">
-            <p className="text-500">Result</p>
-          </Divider>
+          <Divider align="left"></Divider>
 
           <div className="surface-100 p-3 border-round shadow-1">
             <div className="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-3">
               <div className="flex align-items-center gap-3">
                 <div>
                   <b className="text-700">
-                    Number {number ? ": " + number : ""}
+                    Number{number ? ": " + number : ""}
                   </b>
                 </div>
               </div>
@@ -167,17 +170,13 @@ export default function Calculator() {
                   label="Copy"
                   icon="pi pi-copy"
                   onClick={copyHoroscope}
-                  className="p-button-outlined"
+                  className="p-button-outlined p-button-info"
                   disabled={!horoscope}
                 />
                 <Button
-                  label="Use Another"
                   icon="pi pi-refresh"
-                  onClick={() => {
-                    setName("");
-                    setHoroscope("");
-                  }}
-                  className="p-button-secondary"
+                  onClick={clearAll}
+                  className="p-button-rounded p-button-text p-button-info"
                 />
               </div>
             </div>
