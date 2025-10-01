@@ -14,7 +14,7 @@
 
 /* page background */
 body {
-  background: linear-gradient(180deg, #0f172a 0%, #0b1220 40%);
+  background: linear-gradient(180deg, #010c26 0%, #0b1220 40%);
   color: #e6eef8;
   min-height: 100vh;
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
@@ -27,11 +27,7 @@ body {
   max-width: 900px;
   margin: 0 auto 1.25rem;
   border-radius: 12px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 107, 107, 0.12),
-    rgba(107, 140, 255, 0.08)
-  );
+  background: linear-gradient(90deg, #010c26 30%, #051940 70%);
   backdrop-filter: blur(6px);
 }
 .brand-badge {

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -47,10 +47,10 @@ export default function Calculator() {
     return sum;
   }, []);
 
-  // Live compute number when `name` changes (UI preview)
-  useEffect(() => {
-    setNumber(name ? calculateNumber(name) : 0);
-  }, [name, calculateNumber]);
+  const setNameAndNumber = (e) => {
+    setName(e.target.value);
+    setNumber(e.target.value ? calculateNumber(e.target.value) : 0);
+  };
 
   // generate horoscope from current name
   const generateHoroscope = useCallback(
@@ -124,83 +124,85 @@ export default function Calculator() {
   );
 
   return (
-    <Card className="custom-card" header={cardHeader}>
-      <Toast ref={toast} />
+    <div className="page-wrapper">
+      <Card className="custom-card entrance" header={cardHeader}>
+        <Toast ref={toast} />
 
-      <form onSubmit={generateHoroscope} className="grid formgrid gap-3">
-        <div className="col-12 flex flex-wrap align-items-center justify-content-center gap-1">
-          <div className="col-8">
-            <InputText
-              id="nameInput"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
-              className="w-full p-inputtext-lg name-input"
-              aria-label="Name or text"
-            />
+        <form onSubmit={generateHoroscope} className="grid formgrid gap-3">
+          <div className="col-12 flex flex-wrap align-items-center justify-content-center gap-1">
+            <div className="col-8">
+              <InputText
+                id="nameInput"
+                value={name}
+                onChange={setNameAndNumber}
+                placeholder="Enter your name"
+                className="w-full p-inputtext-lg name-input"
+                aria-label="Name or text"
+              />
+            </div>
+            <div className="col-2">
+              <Button
+                type="submit"
+                label="Generate"
+                icon="pi pi-sparkles"
+                className="p-button-raised p-button-success"
+                disabled={!name.trim()}
+                aria-disabled={!name.trim()}
+              />
+            </div>
           </div>
-          <div className="col-2">
-            <Button
-              type="submit"
-              label="Generate"
-              icon="pi pi-sparkles"
-              className="p-button-raised p-button-success"
-              disabled={!name.trim()}
-              aria-disabled={!name.trim()}
-            />
-          </div>
-        </div>
 
-        {/* Result preview */}
-        <div className="col-12">
-          <Divider align="left"></Divider>
+          {/* Result preview */}
+          <div className="col-12">
+            <Divider align="left"></Divider>
 
-          <div className="surface-100 p-3 border-round shadow-1">
-            <div className="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-3">
-              <div className="flex align-items-center gap-3">
-                <div>
-                  <b className="text-700">
-                    Number{number ? ": " + number : ""}
-                  </b>
+            <div className="surface-100 p-3 border-round shadow-1">
+              <div className="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-3">
+                <div className="flex align-items-center gap-3">
+                  <div>
+                    <b className="text-700">
+                      Number{number ? ": " + number : ""}
+                    </b>
+                  </div>
+                </div>
+
+                <div className="flex align-items-center gap-2">
+                  <Button
+                    label="Copy"
+                    icon="pi pi-copy"
+                    onClick={copyHoroscope}
+                    className="p-button-outlined p-button-info"
+                    disabled={!horoscope}
+                  />
+                  <Button
+                    icon="pi pi-refresh"
+                    onClick={clearAll}
+                    className="p-button-rounded p-button-text p-button-info"
+                  />
                 </div>
               </div>
 
-              <div className="flex align-items-center gap-2">
-                <Button
-                  label="Copy"
-                  icon="pi pi-copy"
-                  onClick={copyHoroscope}
-                  className="p-button-outlined p-button-info"
-                  disabled={!horoscope}
-                />
-                <Button
-                  icon="pi pi-refresh"
-                  onClick={clearAll}
-                  className="p-button-rounded p-button-text p-button-info"
-                />
-              </div>
-            </div>
+              <Divider />
 
-            <Divider />
-
-            <div>
-              <small className="text-500">Horoscope</small>
-              <div
-                className="mt-2 p-3 surface-card border-round"
-                style={{ minHeight: 80 }}
-              >
-                {horoscope ? (
-                  <div className="text-900">{horoscope}</div>
-                ) : (
-                  <div className="text-500">
-                    No horoscope yet. Click Generate.
-                  </div>
-                )}
+              <div>
+                <small className="text-500">Horoscope</small>
+                <div
+                  className="mt-2 p-3 surface-card border-round"
+                  style={{ minHeight: 80 }}
+                >
+                  {horoscope ? (
+                    <div className="text-900">{horoscope}</div>
+                  ) : (
+                    <div className="text-500">
+                      No horoscope yet. Click Generate.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </form>
-    </Card>
+        </form>
+      </Card>
+    </div>
   );
 }
