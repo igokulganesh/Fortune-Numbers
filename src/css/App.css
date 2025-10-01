@@ -1,0 +1,145 @@
+/* App.css — colorful theme & small UI polish */
+
+:root {
+  --accent-1: #ff6b6b; /* warm red */
+  --accent-2: #ffb86b; /* orange */
+  --accent-3: #6b8cff; /* cool blue */
+  --accent-4: #7ef0c7; /* mint */
+  --card-bg: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.75)
+  );
+}
+
+/* page background */
+body {
+  background: linear-gradient(180deg, #010c26 0%, #0b1220 40%);
+  color: #e6eef8;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  padding: 2rem;
+}
+
+/* header */
+.app-header {
+  max-width: 900px;
+  margin: 0 auto 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #010c26 30%, #051940 70%);
+  backdrop-filter: blur(6px);
+}
+.brand-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  color: white;
+  box-shadow: 0 4px 18px rgba(11, 18, 32, 0.5);
+}
+.app-title {
+  color: #000000;
+  font-weight: 600;
+}
+
+/* Card custom */
+.custom-card {
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: visible;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* header inside card */
+.calc-card-header {
+  padding: 1rem 1.25rem;
+  gap: 1rem;
+}
+.logo-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: linear-gradient(135deg, var(--accent-3), var(--accent-4));
+  box-shadow: 0 6px 20px rgba(12, 20, 40, 0.45);
+}
+
+/* input group addon gradient */
+.gradient-addon {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  color: white;
+}
+
+/* input styling tweaks */
+.name-input {
+  border-left: none !important;
+}
+
+/* result surface - more color */
+.result-surface {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(8, 10, 20, 0.12)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* number tag larger */
+.number-tag {
+  padding: 0.55rem 0.85rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #ffebc8, #ffd6d6);
+  color: #222;
+}
+
+/* horoscope box with soft gradient */
+.horoscope-box {
+  background: linear-gradient(
+    135deg,
+    rgba(111, 66, 193, 0.06),
+    rgba(107, 140, 255, 0.04)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  min-height: 120px;
+  color: #f0f6ff;
+}
+
+/* horoscope text accent color */
+.horoscope-text {
+  color: #010102;
+  font-weight: 500;
+  line-height: 1.5;
+  font-size: 0.98rem;
+}
+
+/* preview text styling */
+.preview-text {
+  color: #ffe7d6;
+  font-weight: 600;
+}
+
+/* small responsive polish */
+@media (max-width: 640px) {
+  .logo-circle {
+    width: 44px;
+    height: 44px;
+  }
+  .name-input {
+    font-size: 0.95rem;
+  }
+  .horoscope-box {
+    min-height: 100px;
+  }
+}
