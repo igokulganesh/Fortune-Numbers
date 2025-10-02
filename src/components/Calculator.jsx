@@ -217,25 +217,32 @@ export default function Calculator() {
   );
 
   const inputSection = (
-    <div className="col-12 flex flex-wrap align-items-center justify-content-center gap-1">
-      <div className="col-8">
+    <div
+      className="responsive-row"
+      role="group"
+      aria-label="Name input and generate"
+    >
+      <div className="input-wrap">
         <InputText
           id="nameInput"
           value={name}
           onChange={handleNameChange}
           placeholder="Enter your name"
-          className="w-full p-inputtext-lg name-input"
           aria-label="Name or text"
+          style={{ width: "100%" }} // ensures input uses available width
         />
       </div>
-      <div className="col-2">
+
+      <div className="btn-wrap">
         <Button
           type="submit"
           label="Generate"
           icon="pi pi-sparkles"
-          className="p-button-raised p-button-success"
+          onClick={generateHoroscope}
           disabled={!name.trim()}
           aria-disabled={!name.trim()}
+          className="full-width-btn" // used by CSS to become full width on small screens
+          style={{ minWidth: 120 }} // keeps a reasonable button width on desktop
         />
       </div>
     </div>
@@ -267,6 +274,7 @@ export default function Calculator() {
               ? "p-button-warning"
               : "p-button-warning p-button-outlined"
           }
+          disabled={!name.trim()}
           aria-label={isFavorite(name) ? "Unfavorite" : "Add to favorites"}
           tooltip={
             isFavorite(name) ? "Remove from favorites" : "Add to favorites"

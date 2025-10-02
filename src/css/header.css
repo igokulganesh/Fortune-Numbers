@@ -1,0 +1,68 @@
+.app-header {
+  margin: clamp(1rem, 4vw, 3rem) auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, #010c26 30%, #051940 70%);
+  border-radius: 12px;
+  max-width: 900px;
+  text-align: center;
+}
+
+/* inner flex container */
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+/* circular brand badge */
+.brand-badge {
+  width: clamp(44px, 6vw, 56px);
+  height: clamp(44px, 6vw, 56px);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  color: white;
+  box-shadow: 0 4px 18px rgba(11, 18, 32, 0.5);
+  flex-shrink: 0;
+}
+
+/* text section */
+.header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app-title {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
+  color: #e6eef8;
+  margin: 0;
+}
+
+.app-subtitle {
+  font-size: clamp(0.75rem, 1.6vw, 0.95rem);
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 0.25rem;
+}
+
+/* Small-screen layout tweaks */
+@media (max-width: 480px) {
+  .header-inner {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .brand-badge {
+    width: 48px;
+    height: 48px;
+  }
+
+  .app-title {
+    font-size: 1.6rem;
+  }
+}
