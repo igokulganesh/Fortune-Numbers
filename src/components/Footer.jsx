@@ -48,7 +48,7 @@ export default function Footer() {
       <div className="footer-inner flex align-items-center justify-content-between">
         <div className="footer-left">
           <div className="footer-title">
-            Love this tool? Support the developer! ❤️
+            Love this tool? Support the creator! ❤️
           </div>
           <div className="footer-sub text-500">
             Small tip helps keep the project alive ✨
