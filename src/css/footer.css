@@ -1,0 +1,138 @@
+/* SupportFooter styles — uses your theme variables */
+.support-footer {
+  max-width: 900px;
+  margin: 1.25rem auto 0;
+  border-radius: 12px;
+  padding: 1rem;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--accent-4);
+}
+
+/* layout */
+.footer-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap; /* allows wrapping on small screens */
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-left .footer-title {
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.footer-sub {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.88rem;
+}
+
+.footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-actions .footer-credit {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+/* Dialog tweaks */
+.p-dialog-titlebar {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* dialog grid */
+.dialog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+/* QR styling */
+.qr-wrap {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+/* UPI box */
+.upi-box {
+  min-width: 160px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(0, 0, 0, 0.02)
+  );
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upi-id {
+  font-weight: 700;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+/* Ensure the info column centers next to the QR on medium+ screens,
+   while leaving small-screen stacking intact. */
+.support-dialog .dialog-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* responsive: tablet+ -> two-column grid */
+@media (min-width: 768px) {
+  .dialog-grid {
+    grid-template-columns: 1fr 1.2fr;
+    align-items: center;
+  }
+}
+
+/* responsive: small screens */
+@media (max-width: 640px) {
+  .support-footer {
+    padding: 0.75rem;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .footer-actions {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .footer-left .footer-title {
+    font-size: 1rem;
+  }
+
+  .qr-image {
+    max-width: 220px;
+  }
+}

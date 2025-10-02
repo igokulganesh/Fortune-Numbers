@@ -303,7 +303,7 @@ export default function Calculator() {
   const favoriteSection = (
     <div className="col-12">
       <Divider align="left"></Divider>
-      <div className="flex justify-content-between flex-wrap">
+      <div className="flex justify-content-between flex-wrap mb-2">
         <div className="flex align-items-center gap-2">
           <b className="text-700">Favorites</b>
           <Badge value={favorites.length} severity="info" />
