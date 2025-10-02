@@ -1,7 +1,8 @@
 {
   "name": "fortune-numbers",
   "private": false,
-  "version": "0.0.0",
+  "author": "Gokul Ganesh I",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
