@@ -46,4 +46,16 @@ export const FavoriteCard = ({ fav, idx, onLoad, onRemove }) => {
   );
 };
 
-export default FavoriteCard;
+export const FavoriteCards = ({ favorites, onLoad, onRemove }) => {
+  return favorites.map((fav, idx) => (
+    <FavoriteCard
+      key={`${fav.name}-${idx}`}
+      fav={fav}
+      idx={idx}
+      onLoad={onLoad}
+      onRemove={onRemove}
+    />
+  ));
+};
+
+export default FavoriteCards;

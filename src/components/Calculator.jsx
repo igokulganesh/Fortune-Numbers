@@ -5,7 +5,7 @@ import { Card } from "primereact/card";
 import { Divider } from "primereact/divider";
 import { Toast } from "primereact/toast";
 import { data } from "../constants/numerology";
-import FavoriteCard from "./favorite/FavoriteCard";
+import FavoriteCard, { FavoriteCards } from "./favorite/FavoriteCard";
 import FavoriteList from "./favorite/FavoriteList";
 import { calculateNumber } from "../utils/calculateHoroscopeNumber";
 import { Badge } from "primereact/badge";
@@ -300,16 +300,6 @@ export default function Calculator() {
     </div>
   );
 
-  const favoriteCard = favorites.map((fav, idx) => (
-    <FavoriteCard
-      key={`${fav.name}-${idx}`}
-      fav={fav}
-      idx={idx}
-      onLoad={loadFavorite}
-      onRemove={removeFavoriteIndex} // expects removeFavorite(index)
-    />
-  ));
-
   const favoriteSection = (
     <div className="col-12">
       <Divider align="left"></Divider>
@@ -345,7 +335,11 @@ export default function Calculator() {
             No favorites yet. Add important entries by tapping the star.
           </div>
         ) : viewMode === "card" ? (
-          favoriteCard
+          <FavoriteCards
+            favorites={favorites}
+            onLoad={loadFavorite}
+            onRemove={removeFavoriteIndex}
+          />
         ) : (
           <div className="col-12">
             <FavoriteList
