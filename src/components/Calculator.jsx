@@ -5,9 +5,10 @@ import { Card } from "primereact/card";
 import { Divider } from "primereact/divider";
 import { Toast } from "primereact/toast";
 import { data } from "../constants/numerology";
+import FavoriteCard from "./favorite/FavoriteCard";
+import FavoriteList from "./favorite/FavoriteList";
 import { calculateNumber } from "../utils/calculateHoroscopeNumber";
-import { Tag } from "primereact/tag";
-import { ScrollPanel } from "primereact/scrollpanel";
+import { Badge } from "primereact/badge";
 
 const FAVORITES_KEY = "fortune-numbers:favorites";
 
@@ -242,10 +243,9 @@ export default function Calculator() {
 
   const actionButtons = (
     <div className="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-3">
-      <div className="flex align-items-center gap-3">
-        <div>
-          <b className="text-700">Number{number ? ": " + number : ""}</b>
-        </div>
+      <div className="flex align-items-center gap-2">
+        <b className="text-700">Numerology</b>
+        {number ? <Badge value={number} severity="info" /> : <></>}
       </div>
 
       <div className="flex align-items-center gap-2">
@@ -300,75 +300,59 @@ export default function Calculator() {
     </div>
   );
 
-  /**
-   * Card view for a favorite entry.
-   * Props: fav (object), idx (index), onLoad (fn), onRemove (fn)
-   */
-  const FavoriteCard = ({ fav, idx, onLoad, onRemove }) => {
-    return (
-      <div key={`${fav.name}-${idx}`} className="col-12 md:col-6 lg:col-4 p-2">
-        <div className="surface-card p-3 border-round shadow-1 favorite-item flex flex-column gap-2">
-          <div className="flex align-items-center justify-content-between">
-            <div>
-              <div className="text-900 font-medium">{fav.name}</div>
-              <small className="text-500">Number: {fav.number}</small>
-            </div>
+  const favoriteCard = favorites.map((fav, idx) => (
+    <FavoriteCard
+      key={`${fav.name}-${idx}`}
+      fav={fav}
+      idx={idx}
+      onLoad={loadFavorite}
+      onRemove={removeFavoriteIndex} // expects removeFavorite(index)
+    />
+  ));
 
-            <div className="flex align-items-center gap-2">
-              <Button
-                icon="pi pi-eye"
-                className="p-button-text"
-                tooltip="Load this favorite"
-                onClick={() => onLoad(fav)}
-                aria-label={`Load ${fav.name}`}
-              />
-              <Button
-                icon="pi pi-trash"
-                className="p-button-danger p-button-text"
-                tooltip="Remove"
-                aria-label={`Remove ${fav.name}`}
-                onClick={() => onRemove(idx)}
-              />
-            </div>
-          </div>
-
-          <div className="text-700">
-            <ScrollPanel
-              className="overflow-x-auto"
-              style={{ minHeight: 120, maxHeight: 160 }}
-            >
-              {fav.horoscope}
-            </ScrollPanel>
-          </div>
+  const favoriteSection = (
+    <div className="col-12">
+      <Divider align="left"></Divider>
+      <div className="flex justify-content-between flex-wrap">
+        <div className="flex align-items-center gap-2">
+          <b className="text-700">Favorites</b>
+          <Badge value={favorites.length} severity="info" />
+        </div>
+        {/* toolbar: toggle buttons */}
+        <div className="flex align-items-left justify-content-end gap-2 mb-2">
+          <Button
+            icon="pi pi-th-large"
+            className={
+              viewMode === "card" ? "p-button-raised" : "p-button-outlined"
+            }
+            onClick={() => setViewMode("card")}
+            aria-pressed={viewMode === "card"}
+          />
+          <Button
+            icon="pi pi-list"
+            className={
+              viewMode === "list" ? "p-button-raised" : "p-button-outlined"
+            }
+            onClick={() => setViewMode("list")}
+            aria-pressed={viewMode === "list"}
+          />
         </div>
       </div>
-    );
-  };
 
-  const favoritesList = (
-    <div className="col-12">
-      <Divider align="left">
-        <div className="flex align-items-center gap-2">
-          Favorites
-          <Tag value={favorites.length} severity="help" rounded />
-        </div>
-      </Divider>
-
-      <div className="favorites-grid surface-0 p-2 border-round">
+      <div className="grid surface-0 p-2 border-round">
         {favorites.length === 0 ? (
           <div className="text-500 p-3">
             No favorites yet. Add important entries by tapping the star.
           </div>
+        ) : viewMode === "card" ? (
+          favoriteCard
         ) : (
-          <div className="grid">
-            {favorites.map((fav, idx) => (
-              <FavoriteCard
-                fav={fav}
-                idx={idx}
-                onLoad={loadFavorite}
-                onRemove={removeFavoriteIndex}
-              />
-            ))}
+          <div className="col-12">
+            <FavoriteList
+              favorites={favorites}
+              onLoad={loadFavorite}
+              onRemove={removeFavoriteIndex}
+            />
           </div>
         )}
       </div>
@@ -390,7 +374,7 @@ export default function Calculator() {
               {actionButtons}
               <Divider />
               {horoscopeResult}
-              {favoritesList}
+              {favoriteSection}
             </div>
           </div>
         </form>
