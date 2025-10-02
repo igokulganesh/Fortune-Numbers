@@ -13,36 +13,79 @@
 }
 
 /* page background */
-body {
-  background: linear-gradient(180deg, #010c26 0%, #0b1220 40%);
-  color: #e6eef8;
-  min-height: 100vh;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial;
-  padding: 2rem;
+/* Responsive page base styles */
+:root {
+  --bg-top: #010c26;
+  --bg-bottom: #0b1220;
+  --text-color: #e6eef8;
+  --page-padding: clamp(
+    0.75rem,
+    2.5vw,
+    2rem
+  ); /* scales between 0.75rem and 2rem */
 }
 
-/* header */
-.app-header {
-  max-width: 900px;
-  margin: 0 auto 1.25rem;
-  border-radius: 12px;
-  background: linear-gradient(90deg, #010c26 30%, #051940 70%);
-  backdrop-filter: blur(6px);
+html,
+body {
+  height: 100%;
 }
-.brand-badge {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
-  color: white;
-  box-shadow: 0 4px 18px rgba(11, 18, 32, 0.5);
+
+body {
+  margin: 0;
+  padding: var(--page-padding);
+  min-height: 100vh;
+  color: var(--text-color);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* layered background: subtle radial accents + primary linear gradient */
+  background: radial-gradient(
+      circle at 10% 10%,
+      rgba(110, 82, 187, 0.06),
+      transparent 8%
+    ),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 40%);
+
+  /* make the background behave nicely on large screens */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+
+  /* rendering niceties */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
 }
-.app-title {
-  color: #000000;
-  font-weight: 600;
+
+/* ensure predictable box-sizing for all elements */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Slightly reduce padding on very small screens (phones) */
+@media (max-width: 420px) {
+  :root {
+    --page-padding: 0.6rem;
+  }
+}
+
+/* A little more breathing room on wide screens */
+@media (min-width: 1400px) {
+  :root {
+    --page-padding: 3rem;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Card custom */
@@ -141,5 +184,50 @@ body {
   }
   .horoscope-box {
     min-height: 100px;
+  }
+}
+
+.responsive-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+/* input grows, button stays fixed */
+.input-wrap {
+  flex: 1 1 60%;
+  min-width: 220px;
+}
+
+.btn-wrap {
+  flex: 0 0 auto;
+}
+
+/* small screens: stack vertically */
+@media (max-width: 640px) {
+  .responsive-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .input-wrap,
+  .btn-wrap {
+    width: 100%;
+  }
+  /* ensure PrimeReact button becomes full width on mobile */
+  .full-width-btn {
+    width: 100% !important;
+  }
+}
+
+/* optional: comfortable spacing on medium screens */
+@media (min-width: 641px) and (max-width: 980px) {
+  .responsive-row {
+    gap: 10px;
+  }
+  .input-wrap {
+    flex-basis: 70%;
   }
 }

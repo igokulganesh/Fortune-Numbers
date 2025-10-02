@@ -1,15 +1,16 @@
 import React from "react";
+import "../css/header.css";
 
 export default function Header() {
   return (
-    <header className="m-5">
-      <div className="flex align-items-center justify-content-center gap-3">
+    <header className="app-header">
+      <div className="header-inner">
         <div className="brand-badge">
-          <i className="pi pi-sun" style={{ fontSize: 20 }}></i>
+          <i className="pi pi-sun" style={{ fontSize: "1.25rem" }}></i>
         </div>
-        <div className="text-center">
-          <h1 className="m-0 app-title text-blue-50">Fortune Numbers</h1>
-          <small className="text-600">
+        <div className="header-text">
+          <h1 className="app-title">Fortune Numbers</h1>
+          <small className="app-subtitle">
             Finding Your Life's Blueprint in Numbers
           </small>
         </div>
