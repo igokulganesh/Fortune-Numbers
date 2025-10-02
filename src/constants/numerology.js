@@ -1,5 +1,5 @@
 export const data = [
-  '"No horoscope found." \n\n Most of this information is from the book: \n SETHURAMAN, GURUSWAMY. MY FORTUNE: THE MYSTIC KEY TO YOUR SUCCESS THROUGH NUMEROLOGY',
+  "No horoscope found.",
 
   "I am yet to come across someone with a name like 'A'! Anyways (we've got to begin somewhere!), a person with a 1 name would do fairly well initially, but middle age crises would bog him down. Early on there is individuality and inventiveness. Later, inflexible and intractable. Heaps of confusion, with ego issues not letting any solutions through. So, it's inadvisable, even for people who number 1 would usually be lucky. The end is lonely.",
 
