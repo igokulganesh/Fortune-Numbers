@@ -7,6 +7,7 @@ import { Toast } from "primereact/toast";
 import { data } from "../constants/numerology";
 import { calculateNumber } from "../utils/calculateHoroscopeNumber";
 import { Tag } from "primereact/tag";
+import { ScrollPanel } from "primereact/scrollpanel";
 
 const FAVORITES_KEY = "fortune-numbers:favorites";
 
@@ -18,6 +19,7 @@ export default function Calculator() {
 
   // favorites: array of { name, number, horoscope }
   const [favorites, setFavorites] = useState([]);
+  const [viewMode, setViewMode] = useState("card"); // 'card' | 'list'
 
   // load favorites from localStorage once
   useEffect(() => {
@@ -41,11 +43,11 @@ export default function Calculator() {
   }, [favorites]);
 
   // favorites helpers
-  const isFavorite = (n, num, hor) => {
-    const trimmed = (n || "").trim();
+  const isFavorite = (name) => {
+    const trimmed = (name || "").trim();
     // compare by name + number (you can change comparison rule if needed)
     return favorites.some(
-      (f) => f.name === trimmed && f.number === num && f.horoscope === hor
+      (f) => f.name.toLowerCase() === trimmed.toLowerCase()
     );
   };
 
@@ -60,7 +62,7 @@ export default function Calculator() {
       return;
     }
     const fav = { name, number, horoscope };
-    if (isFavorite(fav.name, fav.number, fav.horoscope)) {
+    if (isFavorite(fav.name)) {
       toast.current?.show({
         severity: "info",
         summary: "Already saved",
@@ -121,7 +123,7 @@ export default function Calculator() {
       });
       return;
     }
-    if (isFavorite(trimmed, number, horoscope)) {
+    if (isFavorite(trimmed)) {
       removeFavorite(trimmed, number, horoscope);
     } else {
       addFavorite(trimmed, number, data[number]);
@@ -213,171 +215,182 @@ export default function Calculator() {
     </div>
   );
 
+  const inputSection = (
+    <div className="col-12 flex flex-wrap align-items-center justify-content-center gap-1">
+      <div className="col-8">
+        <InputText
+          id="nameInput"
+          value={name}
+          onChange={handleNameChange}
+          placeholder="Enter your name"
+          className="w-full p-inputtext-lg name-input"
+          aria-label="Name or text"
+        />
+      </div>
+      <div className="col-2">
+        <Button
+          type="submit"
+          label="Generate"
+          icon="pi pi-sparkles"
+          className="p-button-raised p-button-success"
+          disabled={!name.trim()}
+          aria-disabled={!name.trim()}
+        />
+      </div>
+    </div>
+  );
+
+  const actionButtons = (
+    <div className="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-3">
+      <div className="flex align-items-center gap-3">
+        <div>
+          <b className="text-700">Number{number ? ": " + number : ""}</b>
+        </div>
+      </div>
+
+      <div className="flex align-items-center gap-2">
+        {/* Copy */}
+        <Button
+          label="Copy"
+          icon="pi pi-copy"
+          onClick={copyHoroscope}
+          className="p-button-outlined p-button-info"
+          disabled={!horoscope}
+        />
+
+        {/* Favorite (star) */}
+        <Button
+          icon="pi pi-star"
+          onClick={toggleFavorite}
+          className={
+            isFavorite(name)
+              ? "p-button-warning"
+              : "p-button-warning p-button-outlined"
+          }
+          aria-label={isFavorite(name) ? "Unfavorite" : "Add to favorites"}
+          tooltip={
+            isFavorite(name) ? "Remove from favorites" : "Add to favorites"
+          }
+        />
+
+        {/* Reset */}
+        <Button
+          icon="pi pi-refresh"
+          onClick={clearAll}
+          className="p-button-rounded p-button-text p-button-info"
+          aria-label="Reset"
+        />
+      </div>
+    </div>
+  );
+
+  const horoscopeResult = (
+    <div>
+      <small className="text-500">Horoscope</small>
+      <div
+        className="mt-2 p-3 surface-card border-round"
+        style={{ minHeight: 80 }}
+      >
+        {horoscope ? (
+          <div className="text-900">{horoscope}</div>
+        ) : (
+          <div className="text-500">No horoscope yet. Click Generate.</div>
+        )}
+      </div>
+    </div>
+  );
+
+  /**
+   * Card view for a favorite entry.
+   * Props: fav (object), idx (index), onLoad (fn), onRemove (fn)
+   */
+  const FavoriteCard = ({ fav, idx, onLoad, onRemove }) => {
+    return (
+      <div key={`${fav.name}-${idx}`} className="col-12 md:col-6 lg:col-4 p-2">
+        <div className="surface-card p-3 border-round shadow-1 favorite-item flex flex-column gap-2">
+          <div className="flex align-items-center justify-content-between">
+            <div>
+              <div className="text-900 font-medium">{fav.name}</div>
+              <small className="text-500">Number: {fav.number}</small>
+            </div>
+
+            <div className="flex align-items-center gap-2">
+              <Button
+                icon="pi pi-eye"
+                className="p-button-text"
+                tooltip="Load this favorite"
+                onClick={() => onLoad(fav)}
+                aria-label={`Load ${fav.name}`}
+              />
+              <Button
+                icon="pi pi-trash"
+                className="p-button-danger p-button-text"
+                tooltip="Remove"
+                aria-label={`Remove ${fav.name}`}
+                onClick={() => onRemove(idx)}
+              />
+            </div>
+          </div>
+
+          <div className="text-700">
+            <ScrollPanel
+              className="overflow-x-auto"
+              style={{ minHeight: 120, maxHeight: 160 }}
+            >
+              {fav.horoscope}
+            </ScrollPanel>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const favoritesList = (
+    <div className="col-12">
+      <Divider align="left">
+        <div className="flex align-items-center gap-2">
+          Favorites
+          <Tag value={favorites.length} severity="help" rounded />
+        </div>
+      </Divider>
+
+      <div className="favorites-grid surface-0 p-2 border-round">
+        {favorites.length === 0 ? (
+          <div className="text-500 p-3">
+            No favorites yet. Add important entries by tapping the star.
+          </div>
+        ) : (
+          <div className="grid">
+            {favorites.map((fav, idx) => (
+              <FavoriteCard
+                fav={fav}
+                idx={idx}
+                onLoad={loadFavorite}
+                onRemove={removeFavoriteIndex}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="page-wrapper">
       <Card className="custom-card entrance" header={cardHeader}>
         <Toast ref={toast} />
 
         <form onSubmit={generateHoroscope} className="grid formgrid gap-3">
-          <div className="col-12 flex flex-wrap align-items-center justify-content-center gap-1">
-            <div className="col-8">
-              <InputText
-                id="nameInput"
-                value={name}
-                onChange={handleNameChange}
-                placeholder="Enter your name"
-                className="w-full p-inputtext-lg name-input"
-                aria-label="Name or text"
-              />
-            </div>
-            <div className="col-2">
-              <Button
-                type="submit"
-                label="Generate"
-                icon="pi pi-sparkles"
-                className="p-button-raised p-button-success"
-                disabled={!name.trim()}
-                aria-disabled={!name.trim()}
-              />
-            </div>
-          </div>
+          {inputSection}
 
           {/* Result preview */}
           <div className="col-12">
-            <Divider align="left"></Divider>
-
+            <Divider align="left" />
             <div className="surface-100 p-3 border-round shadow-1">
-              <div className="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-3">
-                <div className="flex align-items-center gap-3">
-                  <div>
-                    <b className="text-700">
-                      Number{number ? ": " + number : ""}
-                    </b>
-                  </div>
-                </div>
-
-                <div className="flex align-items-center gap-2">
-                  {/* Copy */}
-                  <Button
-                    label="Copy"
-                    icon="pi pi-copy"
-                    onClick={copyHoroscope}
-                    className="p-button-outlined p-button-info"
-                    disabled={!horoscope}
-                  />
-
-                  {/* Favorite (star) */}
-                  <Button
-                    icon={
-                      isFavorite(name, number, horoscope)
-                        ? "pi pi-star"
-                        : "pi pi-star"
-                    }
-                    onClick={toggleFavorite}
-                    className={
-                      isFavorite(name, number, horoscope)
-                        ? "p-button-warning"
-                        : "p-button-warning p-button-outlined"
-                    }
-                    aria-label={
-                      isFavorite(name, number, horoscope)
-                        ? "Unfavorite"
-                        : "Add to favorites"
-                    }
-                    tooltip={
-                      isFavorite(name, number, horoscope)
-                        ? "Remove from favorites"
-                        : "Add to favorites"
-                    }
-                  />
-
-                  {/* Reset */}
-                  <Button
-                    icon="pi pi-refresh"
-                    onClick={clearAll}
-                    className="p-button-rounded p-button-text p-button-info"
-                    aria-label="Reset"
-                  />
-                </div>
-              </div>
-
+              {actionButtons}
               <Divider />
-
-              <div>
-                <small className="text-500">Horoscope</small>
-                <div
-                  className="mt-2 p-3 surface-card border-round"
-                  style={{ minHeight: 80 }}
-                >
-                  {horoscope ? (
-                    <div className="text-900">{horoscope}</div>
-                  ) : (
-                    <div className="text-500">
-                      No horoscope yet. Click Generate.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Favorites list */}
-              <div className="col-12">
-                <Divider align="left">
-                  <div className="flex align-items-center gap-2">
-                    <b>Favorites</b>
-                    <Tag value={favorites.length} severity="help" rounded />
-                  </div>
-                </Divider>
-
-                <div className="favorites-grid surface-0 p-2 border-round">
-                  {favorites.length === 0 ? (
-                    <div className="text-500 p-3">
-                      No favorites yet. Add important entries by tapping the
-                      star.
-                    </div>
-                  ) : (
-                    <div className="grid">
-                      {favorites.map((fav, idx) => (
-                        <div
-                          key={`${fav.name}-${idx}`}
-                          className="col-12 md:col-6 lg:col-4 p-2"
-                        >
-                          <div className="surface-card p-3 border-round shadow-1 favorite-item flex flex-column gap-2">
-                            <div className="flex align-items-center justify-content-between">
-                              <div>
-                                <div className="text-900 font-medium">
-                                  {fav.name}
-                                </div>
-                                <small className="text-500">
-                                  Number: {fav.number}
-                                </small>
-                              </div>
-
-                              <div className="flex align-items-center gap-2">
-                                <Button
-                                  icon="pi pi-eye"
-                                  className="p-button-text"
-                                  tooltip="Load this favorite"
-                                  onClick={() => loadFavorite(fav)}
-                                />
-                                <Button
-                                  icon="pi pi-trash"
-                                  className="p-button-danger p-button-text"
-                                  tooltip="Remove"
-                                  onClick={() => removeFavoriteIndex(idx)}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="text-700" style={{ minHeight: 48 }}>
-                              {fav.horoscope}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
+              {horoscopeResult}
+              {favoritesList}
             </div>
           </div>
         </form>
