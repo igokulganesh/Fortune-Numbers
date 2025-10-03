@@ -3,7 +3,6 @@ import { PrimeReactProvider } from "primereact/api";
 import App from "./App.jsx";
 
 import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
-//import "primereact/resources/themes/saga-blue/theme.css";
 import "primeflex/themes/primeone-light.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
