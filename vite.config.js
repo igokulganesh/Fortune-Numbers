@@ -11,7 +11,7 @@ const manifestForPlugIn = {
   ],
   manifest: {
     name: "Fortune Numbers",
-    short_name: "Numerology App",
+    short_name: "Fortune Numbers",
     description:
       "Discover your life's blueprint and future insights with our free numerology app. Find your fortune numbers today!",
     icons: [

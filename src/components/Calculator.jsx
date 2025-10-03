@@ -5,7 +5,7 @@ import { Card } from "primereact/card";
 import { Divider } from "primereact/divider";
 import { Toast } from "primereact/toast";
 import { data } from "../constants/numerology";
-import FavoriteCard, { FavoriteCards } from "./favorite/FavoriteCard";
+import FavoriteCards from "./favorite/FavoriteCard";
 import FavoriteList from "./favorite/FavoriteList";
 import { calculateNumber } from "../utils/calculateHoroscopeNumber";
 import { Badge } from "primereact/badge";

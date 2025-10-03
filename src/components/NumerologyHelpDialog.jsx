@@ -145,7 +145,7 @@ export const NumerologyHelpDialog = ({ visible, setVisible }) => {
                     </div>
                   ))
                 ) : (
-                  <div className="nhd-empty">No letters yet</div>
+                  <div className="text-500">No letters yet</div>
                 )}
               </div>
 
