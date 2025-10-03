@@ -1,0 +1,207 @@
+/* Scoped styles for NumerologyHelpDialog component */
+
+/* Dialog tweaks */
+.nhd-dialog .p-dialog-titlebar {
+  background: linear-gradient(
+    90deg,
+    var(--accent-1, #ff6b6b),
+    var(--accent-3, #6b8cff)
+  );
+  color: #fff;
+}
+
+/* overall grid */
+.nhd-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 1rem;
+  align-items: start;
+}
+
+/* stack for small screens */
+@media (max-width: 820px) {
+  .nhd-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* left column */
+.nhd-left {
+  padding-right: 0.5rem;
+}
+.nhd-title {
+  margin: 0 0 0.5rem 0;
+  color: #e6eef8;
+}
+.nhd-blurb {
+  color: rgba(5, 3, 33, 0.8);
+  margin-top: 0;
+}
+
+/* input row */
+.nhd-input-row {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.nhd-input-label {
+  display: block;
+  min-width: 110px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+}
+
+/* steps */
+.nhd-steps {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.nhd-step {
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* right column */
+.nhd-right {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(0, 0, 0, 0.02)
+  );
+  border-radius: 10px;
+  padding: 0.75rem;
+  min-height: 100%;
+}
+
+/* mapping table title */
+.nhd-map-title {
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* mapping grid (like periodic table small tiles) */
+.nhd-mapping {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.45rem;
+  margin-bottom: 0.8rem;
+}
+@media (max-width: 480px) {
+  .nhd-mapping {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.nhd-mapping-cell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #0b1220, #071026);
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+.nhd-mapping-letter {
+  font-weight: 700;
+  color: #fff;
+  font-size: 0.95rem;
+}
+.nhd-mapping-value {
+  background: linear-gradient(90deg, #ffebc8, #ffd6d6);
+  color: #111;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+/* example area */
+.nhd-example {
+  margin-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.nhd-example-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+.nhd-example-title {
+  font-weight: 700;
+  color: #000000;
+}
+.nhd-example-name {
+  font-weight: 800;
+  color: #ff6600;
+}
+
+/* letter boxes for example */
+.nhd-example-letters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+.nhd-letter-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem;
+  background: linear-gradient(135deg, #6a82fb, #7ef0c7);
+  border-radius: 8px;
+  min-width: 54px;
+}
+.nhd-letter-char {
+  font-weight: 800;
+  color: #fff;
+  font-size: 1.05rem;
+}
+.nhd-letter-val {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+/* sum row */
+.nhd-sum-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 0.6rem;
+}
+.nhd-sum-label {
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+}
+.nhd-sum-value {
+  background: linear-gradient(90deg, #ffd6d6, #ffbfbf);
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 800;
+  color: #111;
+}
+.nhd-reduced-note {
+  margin-left: 0.6rem;
+  color: rgba(32, 32, 32, 0.85);
+}
+
+/* empty state */
+.nhd-empty {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* small helper */
+.nhd-dialog .p-dialog-content {
+  padding: 0.8rem 1rem;
+}

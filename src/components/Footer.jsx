@@ -3,9 +3,11 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import UPI_QR from "../assets/UPI_QR.jpeg";
 import "../css/footer.css";
+import { NumerologyHelpDialog } from "./NumerologyHelpDialog";
 
 export default function Footer() {
   const [visible, setVisible] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   // replace with your real UPI id
   const upiId = "igokulganesh@okhdfcbank";
@@ -45,6 +47,7 @@ export default function Footer() {
       className="support-footer border-round p-3 shadow-2"
       role="contentinfo"
     >
+      <NumerologyHelpDialog visible={showHelp} setVisible={setShowHelp} />
       <div className="footer-inner flex align-items-center justify-content-between">
         <div className="footer-left">
           <div className="footer-title">
@@ -63,15 +66,11 @@ export default function Footer() {
             onClick={() => setVisible(true)}
             aria-haspopup="dialog"
           />
-          <a
-            className="text-500 footer-credit"
-            href="https://github.com/igokulganesh/Fortune-Numbers"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Open project on GitHub"
-          >
-            View on GitHub
-          </a>
+          <Button
+            label="How it works?"
+            className="text-500 footer-credit p-button-text"
+            onClick={() => setShowHelp(true)}
+          />
         </div>
       </div>
       {dialog}
