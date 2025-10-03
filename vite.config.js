@@ -8,8 +8,7 @@ export default defineConfig({
 
   build: {
     outDir: "docs",
-    // empty the output dir before each build
-    emptyOutDir: true,
+    emptyOutDir: false,
   },
 
   server: {
